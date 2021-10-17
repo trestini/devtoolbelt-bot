@@ -1,22 +1,12 @@
 [
   {
-    "name": "logger",
-    "file": "logger",
+    "name": "slack-bolt",
+    "file": "slack-bolt",
     "depends": []
-  },
-  {
-    "name": "worker",
-    "file": "worker",
-    "depends": ["logger"]
   },
   {
     "name": "feature-api",
     "file": "feature-api",
-    "depends": ["logger"]
-  },
-  {
-    "name": "health-api",
-    "file": "health-api",
-    "depends": ["logger"]
+    "depends": []
   }
 ]

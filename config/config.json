@@ -1,3 +1,7 @@
 {
+  "PORT": 3001,
+  "featureApi": {
+    "autoDiscoveryFeatures": true
+  },
   "logLevel": 1
 }

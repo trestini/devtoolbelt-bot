@@ -1,3 +1,6 @@
+import {config as env} from 'dotenv';
+env();
+
 const {npm_package_name, npm_package_version} = process.env;
 const appLabel = `${npm_package_name}:${npm_package_version}`;
 

@@ -63,7 +63,7 @@ export default class FeatureApi implements Bootable {
       
       try {
         this.koaApp.on('error', (e) => {
-          reject(e);
+          console.error(e);
         });
         
         const server = this.koaApp.listen(PORT);
