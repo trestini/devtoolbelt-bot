@@ -1,11 +1,10 @@
 import { BasicResponse, BlockKitResponse, SlackSlashCommand, SlackSlashCommandPayload } from "./types";
 
-const TIMES_PARAMS = /(x? ?([0-9]{1,2}))/;
-
 type Command = {
   command: String
   utility: String
   times?: number
+  args?: Array<string>
 }
 
 export abstract class BaseCommand implements SlackSlashCommand {
@@ -14,14 +13,19 @@ export abstract class BaseCommand implements SlackSlashCommand {
 
     const {command, text} = payload;
     const [utility, ...params] = text.split(" ");
-    const resp = params.join(" ").match(TIMES_PARAMS);
 
     return {
       command,
       utility,
-      times: resp && resp.length > 0 ? parseInt(resp[2]) : 1
+      times: this.findTimes(params),
+      args: params
     }
 
+  }
+
+  private findTimes(args: Array<string>): number {
+    const x = args.filter(arg => arg.charAt(0) === "x");
+    return x.length > 0 ? parseInt(x[0].replace("x", "")) : 1;
   }
 
   abstract get routes(): Array<string>
