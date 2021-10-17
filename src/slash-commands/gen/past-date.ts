@@ -5,7 +5,7 @@ import { BaseCommand } from '../base-command';
 export default class extends BaseCommand {
 
   get routes() {
-    return ["futuredate", "future-date"];
+    return ["pastdate", "past-date"];
   }
 
   async process(payload: SlackSlashCommandPayload): Promise<BasicResponse> {
@@ -13,7 +13,7 @@ export default class extends BaseCommand {
     const command = super.parse(payload);
 
     const responseText = range(0, command.times)
-      .map(this.randomFutureDate)
+      .map(this.randomPastDate)
       .map(isoDate => "`" + isoDate + "`")
       .join("\n");
 
@@ -23,11 +23,11 @@ export default class extends BaseCommand {
     }
   }
 
-  private randomFutureDate(): string {
+  private randomPastDate(): string {
     const aDay = 1000 * 60 * 60 * 24;
     const rand = Math.random() * 30;
 
-    return new Date(aDay * rand + Date.now()).toISOString()
+    return new Date(Date.now() - aDay * rand).toISOString()
   }
 
 }
