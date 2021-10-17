@@ -2,10 +2,12 @@ import { BasicResponse, ResponseType, SlackSlashCommandPayload } from './../type
 import { range } from 'ramda';
 import { BaseCommand } from '../base-command';
 
+const DAY_IN_MS = 1000 * 60 * 60 * 24;
+
 export default class extends BaseCommand {
 
   get routes() {
-    return ["futuredate", "future-date"];
+    return ["date"];
   }
 
   async process(payload: SlackSlashCommandPayload): Promise<BasicResponse> {
@@ -13,8 +15,8 @@ export default class extends BaseCommand {
     const command = super.parse(payload);
 
     const responseText = range(0, command.times)
-      .map(this.randomFutureDate)
-      .map(isoDate => "`" + isoDate + "`")
+      .map(_ => this.gen(command.args))
+      .map(uuid => "`" + uuid + "`")
       .join("\n");
 
     return {
@@ -23,11 +25,13 @@ export default class extends BaseCommand {
     }
   }
 
-  private randomFutureDate(): string {
-    const aDay = 1000 * 60 * 60 * 24;
+  private gen(...args){
+    const [direction, ..._] = args;
+    console.log("direction", direction);
+    const signal = direction[0] === "future" ? 1 : -1;
     const rand = Math.random() * 30;
 
-    return new Date(aDay * rand + Date.now()).toISOString()
+    return new Date(Date.now() + signal * DAY_IN_MS * rand ).toISOString()
   }
 
 }
